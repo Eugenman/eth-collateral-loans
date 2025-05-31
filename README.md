@@ -6,14 +6,14 @@ A minimal open-source protocol that lets users lend and borrow **ETH** against o
 
 ## ✨ Features
 
-| Module | Capability |
-|--------|------------|
-| **Collateral Deposit** | Supply ETH to the protocol and begin earning interest. |
-| **Borrowing** | Take out a loan up to a configurable collateral ratio (e.g. 150 %). |
-| **Repayment** | Repay part or all of the loan plus accrued interest. |
-| **Withdrawal** | Withdraw unlocked collateral once debt is covered. |
-| **Liquidation** | Any user may liquidate positions that fall below the minimum collateral ratio. |
-| **Admin Config** | Owner (or future DAO) can tweak parameters: interest rate, liquidation bonus, collateral factor. |
+| Module                 | Capability                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------------ |
+| **Collateral Deposit** | Supply ETH to the protocol and begin earning interest.                                           |
+| **Borrowing**          | Take out a loan up to a configurable collateral ratio (e.g. 150 %).                              |
+| **Repayment**          | Repay part or all of the loan plus accrued interest.                                             |
+| **Withdrawal**         | Withdraw unlocked collateral once debt is covered.                                               |
+| **Liquidation**        | Any user may liquidate positions that fall below the minimum collateral ratio.                   |
+| **Admin Config**       | Owner (or future DAO) can tweak parameters: interest rate, liquidation bonus, collateral factor. |
 
 ---
 
@@ -64,11 +64,13 @@ npx hardhat compile
 npx hardhat node &
 npx hardhat test
 ```
+
 ---
 
 ## 📡 Deploy to Testnet
 
 ### Create a .env file at the project root
+
 ```
 PRIVATE_KEY=0xYOUR_WALLET_PRIVATE_KEY
 RPC_URL=https://sepolia.infura.io/v3/YOUR_KEY
@@ -76,38 +78,48 @@ ETHERSCAN_API_KEY=YOUR_KEY   # optional for verification
 ```
 
 ### Deploy
+
 ```
 npx hardhat run scripts/deploy.ts --network sepolia
 ```
+
 ---
 
 ## 🧪 Testing
 
 ### Hardhat tests live in /test and cover:
-* Deposit & balance tracking
-* Borrow limits and interest accrual
-* Repayment logic
-* Liquidation path & collateral auctions
+
+- Deposit & balance tracking
+- Borrow limits and interest accrual
+- Repayment logic
+- Liquidation path & collateral auctions
 
 ### Run with
+
 ```
 npx hardhat test
 ```
+
 ---
 
 ## 🗺 Roadmap
 
-* Integrate Chainlink Price Feed for real-time ETH/USD
-* Migrate ETH → ERC20 collateral support
-* Implement DAO governance (OpenZeppelin Governor)
-* Add subgraph for analytics (The Graph)
-* Deploy front-end to Vercel & contracts to Mainnet / L2
+- Integrate Chainlink Price Feed for real-time ETH/USD
+- Migrate ETH → ERC20 collateral support
+- Implement DAO governance (OpenZeppelin Governor)
+- Add subgraph for analytics (The Graph)
+- Deploy front-end to Vercel & contracts to Mainnet / L2
+
 ---
+
 ## 🤝 Contributing
-Pull requests are welcome! Please open an issue first to discuss changes. Follow conventional commits & ensure test coverage ≥ 80 %
----
+
+## Pull requests are welcome! Please open an issue first to discuss changes. Follow conventional commits & ensure test coverage ≥ 80 %
+
 ## 📄 License
+
 Distributed under the MIT License. See LICENSE for more information.
 
 ## 👤 Author
+
 Evgenii Kruglov — reach out on LinkedIn if you have questions or job opportunities!
