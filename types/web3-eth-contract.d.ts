@@ -1,5 +1,4 @@
 import { PromiEvent, TransactionReceipt } from 'web3-core';
-import { Contract } from 'web3-eth-contract';
 
 declare module 'web3-eth-contract' {
   interface Contract {

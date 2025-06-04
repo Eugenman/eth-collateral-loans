@@ -1,14 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.30;
+pragma solidity ^0.8.24;
 
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract Lending is ReentrancyGuard, Ownable, Pausable {
-    using SafeMath for uint256;
-
     struct Position {
         uint256 collateral; // in ETH
         uint256 debt;       // in ETH
@@ -30,7 +27,7 @@ contract Lending is ReentrancyGuard, Ownable, Pausable {
     // --- Deposit ETH as collateral ---
     function depositCollateral() external payable nonReentrant whenNotPaused {
         require(msg.value > 0, "Deposit must be > 0");
-        positions[msg.sender].collateral = positions[msg.sender].collateral.add(msg.value);
+        positions[msg.sender].collateral += msg.value;
 
         emit Deposited(msg.sender, msg.value);
     }
@@ -41,10 +38,10 @@ contract Lending is ReentrancyGuard, Ownable, Pausable {
 
         require(pos.collateral > 0, "No collateral deposited");
 
-        uint256 maxBorrow = pos.collateral.mul(BASE).div(COLLATERAL_FACTOR);
-        require(pos.debt.add(amount) <= maxBorrow, "Exceeds borrow limit");
+        uint256 maxBorrow = (pos.collateral * BASE) / COLLATERAL_FACTOR;
+        require(pos.debt + amount <= maxBorrow, "Exceeds borrow limit");
 
-        pos.debt = pos.debt.add(amount);
+        pos.debt += amount;
         (bool success, ) = payable(msg.sender).call{value: amount}("");
         require(success, "Transfer failed");
 
@@ -58,12 +55,12 @@ contract Lending is ReentrancyGuard, Ownable, Pausable {
 
         uint256 repayAmount = msg.value;
         if (repayAmount > pos.debt) {
-            uint256 excess = repayAmount.sub(pos.debt);
+            uint256 excess = repayAmount - pos.debt;
             pos.debt = 0;
             (bool success, ) = payable(msg.sender).call{value: excess}("");
             require(success, "Transfer failed");
         } else {
-            pos.debt = pos.debt.sub(repayAmount);
+            pos.debt -= repayAmount;
         }
 
         emit Repaid(msg.sender, repayAmount);
@@ -75,11 +72,11 @@ contract Lending is ReentrancyGuard, Ownable, Pausable {
         require(amount > 0, "Amount must be > 0");
         require(pos.collateral >= amount, "Not enough collateral");
 
-        uint256 remainingCollateral = pos.collateral.sub(amount);
-        uint256 maxBorrow = remainingCollateral.mul(BASE).div(COLLATERAL_FACTOR);
+        uint256 remainingCollateral = pos.collateral - amount;
+        uint256 maxBorrow = (remainingCollateral * BASE) / COLLATERAL_FACTOR;
         require(pos.debt <= maxBorrow, "Cannot withdraw below required collateral");
 
-        pos.collateral = pos.collateral.sub(amount);
+        pos.collateral -= amount;
         (bool success, ) = payable(msg.sender).call{value: amount}("");
         require(success, "Transfer failed");
 
@@ -89,7 +86,7 @@ contract Lending is ReentrancyGuard, Ownable, Pausable {
     // --- View borrowable amount ---
     function getMaxBorrow(address user) external view returns (uint256) {
         Position memory pos = positions[user];
-        return pos.collateral.mul(BASE).div(COLLATERAL_FACTOR).sub(pos.debt);
+        return ((pos.collateral * BASE) / COLLATERAL_FACTOR) - pos.debt;
     }
 
     // --- Admin functions ---

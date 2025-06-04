@@ -18,7 +18,9 @@
     "frontend:dev": "cd frontend && vite",
     "frontend:build": "cd frontend && vite build",
     "frontend:preview": "cd frontend && vite preview",
-    "dev": "concurrently \"npm run frontend:dev\""
+    "dev": "concurrently \"npm run frontend:dev\"",
+    "analyze": "slither contracts/Lending.sol --solc-remaps '@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/'",
+    "ganache": "ganache --port 8545 --chain.chainId 1337 --database.dbPath ./ganache-db --wallet.deterministic --wallet.totalAccounts 10 --wallet.defaultBalance 1000"
   },
   "devDependencies": {
     "@openzeppelin/test-helpers": "^0.5.16",
@@ -61,7 +63,7 @@
     "vite-plugin-dts": "^3.6.0"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.9.0"
+    "@openzeppelin/contracts": "^4.9.6"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

@@ -36,4 +36,10 @@ module.exports = {
   api_keys: {
     etherscan: process.env.ETHERSCAN_API_KEY,
   },
+  paths: {
+    sources: './contracts',
+    tests: './test',
+    cache: './cache',
+    artifacts: './build/contracts',
+  },
 };

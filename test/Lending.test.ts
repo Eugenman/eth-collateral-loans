@@ -3,23 +3,23 @@ import { BN } from 'bn.js';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { expectRevert, expectEvent } = require('@openzeppelin/test-helpers');
 import Web3 from 'web3';
-import type { Contract } from 'web3-eth-contract';
+import type { Contract as Web3Contract } from 'web3-eth-contract';
 import * as chai from 'chai';
 import chaiBN from 'chai-bn';
 
 chai.use(chaiBN(BN));
 
 declare global {
-  var web3: Web3;
-  var artifacts: {
+  let web3: Web3;
+  let artifacts: {
     require(name: string): Promise<any>;
   };
-  var contract: (name: string, callback: (accounts: string[]) => void) => void;
+  let contract: (name: string, callback: (accounts: string[]) => void) => void;
 }
 
 contract('Lending', (accounts: string[]) => {
-  let lending: Contract;
-  const [owner, user1, user2] = accounts;
+  let lending: Web3Contract;
+  const [owner, user1] = accounts;
 
   beforeEach(async () => {
     const Lending = await artifacts.require('Lending');
