@@ -1,0 +1,4 @@
+{
+  "solc_remaps": ["@openzeppelin/=node_modules/@openzeppelin/"],
+  "solc_args": "--allow-paths .,node_modules"
+}
